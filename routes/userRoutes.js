@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); // Le modèle User
+const User = require('../models/user'); 
 
 // Route pour récupérer tous les utilisateurs
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find(); // Récupère tous les utilisateurs depuis MongoDB
-    res.json(users); // Retourne les utilisateurs au format JSON
+    const users = await User.find(); 
+    res.json(users); 
   } catch (error) {
     res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs', error });
   }
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 // Route pour créer un utilisateur
 router.post('/', async (req, res) => {
   try {
-    const { nom, prenom, email, password, role="user" } = req.body;
+    const { nom, prenom, email, password, role="user" } = req.body; //un utilisateur a pour le moment le role user automatiquement (on verra par la suite pour le role admin)
 
     // Validation des champs
     if (!nom || !prenom || !email || !password) {
