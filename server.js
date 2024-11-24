@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
+const apiRouter = require('./routes')
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes
-app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/', apiRouter);
 
 const PORT = process.env.PORT || 5000;
 
