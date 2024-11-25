@@ -29,5 +29,46 @@ module.exports = {
         }
     },
 
-    
+    createCv: async (req, res) => {
+        try {
+            const isNotValidate = verifyCv(req.body);
+            if (isNotValidate) {
+                res.status(400);
+                res.send({
+                    error: isNotValidate.message,
+                });
+            }
+            const cvBody = req.body;
+            const newCv = new Cv({
+                titre: cvBody.titre,
+                adresse: cvBody.adresse,
+                description: cvBody.description,
+                techSkills: cvBody.techSkills,
+                softSkills: cvBody.softSkills,
+                certifications: cvBody.certifications,
+                expPro: cvBody.expPro,
+                visible: cvBody.expPro,
+            });
+
+            newCv.author = req.user;
+            newCv.save();
+
+            const { id, nom, prenom } = req.user;
+            newCv.author = {
+                id,
+                nom,
+                prenom,
+            };
+            res.status(201);
+            res.send({
+                success: true,
+                book: newCv,
+            });
+        } catch (error) {
+            res.status(500);
+            res.send({
+                error: error.message,
+            });
+        }
+    },
 };

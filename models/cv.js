@@ -14,7 +14,7 @@ const cvSchema = new mongoose.Schema(
             description: { type: String, required: true },
         },
         visible: { type: Boolean, required: true },
-        user: {
+        author: {
             type: mongoose.Schema.ObjectId,
             ref: "User",
             required: true,
