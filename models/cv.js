@@ -16,11 +16,11 @@ const cvSchema = new mongoose.Schema(
         visible: { type: Boolean, required: true },
         user: {
             type: mangoose.Schema.ObjectId,
-            ref: 'User',
-            required: true
-        }
+            ref: "User",
+            required: true,
+        },
     },
     { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Cv", userSchema);

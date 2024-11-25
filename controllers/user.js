@@ -12,4 +12,17 @@ module.exports = {
             });
         }
     },
+
+    getOne: async (req, res) => {
+        const userId = req.params.id;
+        try {
+            const user = await User.findById(userId);
+            res.send(user);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                message: `Error retrieving user with id=${bookId}`
+            });
+        }
+    }
 }
