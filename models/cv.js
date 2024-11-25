@@ -15,7 +15,7 @@ const cvSchema = new mongoose.Schema(
         },
         visible: { type: Boolean, required: true },
         user: {
-            type: mangoose.Schema.ObjectId,
+            type: mongoose.Schema.ObjectId,
             ref: "User",
             required: true,
         },
@@ -23,4 +23,4 @@ const cvSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("Cv", userSchema);
+module.exports = mongoose.model("Cv", cvSchema);
