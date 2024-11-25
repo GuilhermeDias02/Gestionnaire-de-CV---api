@@ -21,8 +21,8 @@ module.exports = {
         } catch (error) {
             console.log(error);
             res.status(500).send({
-                message: `Error retrieving user with id=${bookId}`
+                message: `Error retrieving user with id=${userId}`,
             });
         }
-    }
-}
+    },
+};
