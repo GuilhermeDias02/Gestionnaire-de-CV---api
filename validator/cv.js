@@ -1,7 +1,7 @@
 const { Validator } = require("jsonschema");
 
 module.exports = {
-    verifyUser: (cv) => {
+    verifyCv: (cv) => {
         let validator = new Validator();
         let cvSchema = {
             type: "object",
@@ -94,11 +94,14 @@ module.exports = {
                 },
                 visible: {
                     type: "boolean",
-                    errorMessage: "Visble or mi"
+                    errorMessage: "visible must be true or false"
                 },
-                //pe rajouter author
+                author: {
+                    type: "number",
+                    errorMessage: "author must be the id of the user"
+                }
             },
-            required: ["titre", "techSkills", "softSkills", "certifications", "expPro", "visible"],
+            required: ["titre", "techSkills", "softSkills", "certifications", "expPro", "visible", "author"],
         };
         let result = validator.validate(cv, cvSchema);
 
