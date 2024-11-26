@@ -1,52 +1,116 @@
-const { Validator } = require('jsonschema');
+const { Validator } = require("jsonschema");
 
 module.exports = {
     verifyUser: (cv) => {
         let validator = new Validator();
         let cvSchema = {
-            type: 'object',
+            type: "object",
             properties: {
                 titre: {
-                    type: 'string',
+                    type: "string",
                     minLength: 1,
                     maxLength: 64,
-                    errorMessage: 'Resume\'s (cv) "title" is missing or is longuer than 64 characters'
+                    errorMessage:
+                        'Resume\'s (cv) "title" is missing or is longuer than 64 characters',
                 },
                 adresse: {
-                    type: 'string',
+                    type: "string",
                     minLength: 1,
                     maxLength: 32,
-                    errorMessage: 'Resume\'s (cv) "adresse" is missing or longer than 32 characters'
+                    errorMessage:
+                        'Resume\'s (cv) "adresse" is missing or longer than 32 characters',
                 },
                 desciption: {
-                    type: 'string',
+                    type: "string",
                     maxLength: 128,
-                    errorMessage: 'Resume\'s (cv) "description" is missing or longer than 128 characters'
+                    errorMessage:
+                        'Resume\'s (cv) "description" is missing or longer than 128 characters',
                 },
-                password: {
-                    type: 'string',
-                    minLength: 6,
-                    errorMessage: "User's password, must contain at least one uppercase letter and one digit",
-                    pattern: '^(?=.*[A-Z])(?=.*[0-9]).+$'
+                techSkills: {
+                    type: "array",
+                    items: {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 20,
+                    },
+                    errorMessage:
+                        "techSkills array items cannot be longer than 20 characters",
                 },
-                role: {
-                    type: 'string',
-                    errorMessage: "User's role must be either user or admin"
-                }
+                softSkills: {
+                    type: "array",
+                    items: {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 20,
+                    },
+                    errorMessage:
+                        "softSkills array items cannot longer than 20 characters",
+                },
+                certifications: {
+                    type: "array",
+                    items: {
+                        type: "string",
+                        minLength: 1,
+                        maxLength: 50,
+                    },
+                    errorMessage:
+                        "certifications array items connot be longer than 50 characters",
+                },
+                expPro: {
+                    type: "object",
+                    properties: {
+                        entreprises: {
+                            type: "array",
+                            items: {
+                                type: "string",
+                                minLength: 1,
+                                maxLength: 50,
+                            },
+                            errorMessage:
+                                "expPro.entreprise missing or item longer than 50 characters",
+                        },
+                        poste: {
+                            type: "array",
+                            items: {
+                                type: "string",
+                                minLength: 1,
+                                maxLength: 20,
+                            },
+                            errorMessage:
+                                "expPro.poste missing or item longer than 20 characters",
+                        },
+                        description: {
+                            type: "array",
+                            items: {
+                                type: "string",
+                                minLength: 1,
+                                maxLength: 200,
+                            },
+                            errorMessage:
+                                "expPro.description missing or item longer than 100 characters",
+                        },
+                    },
+                    required: ["entreprise", "poste", "description"],
+                },
+                visible: {
+                    type: "boolean",
+                    errorMessage: "Visble or mi"
+                },
+                //pe rajouter author
             },
-            required: ['nom', 'prenom', 'email', 'password']
+            required: ["titre", "techSkills", "softSkills", "certifications", "expPro", "visible"],
         };
-        let result = validator.validate(user, userSchema);
+        let result = validator.validate(cv, cvSchema);
 
         if (Array.isArray(result.errors) && result.errors.length) {
-            let failedInputs = '';
+            let failedInputs = "";
 
             result.errors.forEach((error) => {
-                failedInputs += (error.schema.error || error.message) + ', ';
+                failedInputs += (error.schema.error || error.message) + ", ";
             });
             return {
-                message: failedInputs
+                message: failedInputs,
             };
         }
-    }
+    },
 };
