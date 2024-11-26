@@ -10,3 +10,5 @@ router.post('/', cvController.createCv);
 router.put('/:id', cvController.editCv);
 
 router.delete('/:id', cvController.deleteCv);
+
+module.exports = router;

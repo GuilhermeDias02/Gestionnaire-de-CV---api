@@ -9,3 +9,5 @@ router.get('/:id', recommController.getOneByCv);
 router.post('/', recommController.createOne);
 
 router.delete('/'. recommController.deleteOne);
+
+module.exports = router;
