@@ -1,21 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const userController = require('../controllers/user');
-const User = require('../models/user'); 
+//const User = require('../models/user'); 
 
-// Route pour récupérer tous les utilisateurs
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find(); 
-    res.json(users); 
-  } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs', error });
-  }
-});
 
 // Route pour créer un utilisateur
 router.post('/', async (req, res) => {
-  //console.log('Données reçues dans la requête POST:', req.body);
   try {
 
     const { nom, prenom, email, password, role="user" } = req.body; //un utilisateur a pour le moment le role user automatiquement (on verra par la suite pour le role admin)
@@ -49,7 +39,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur', error });
   }
 });
-//router.get("/", userController.getAll);// juste pour les tests
-//router.get("/:id", userController.getOne);
+router.get("/", userController.getAll);
+router.get("/:id", userController.getOne);
 
 module.exports = router;

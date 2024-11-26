@@ -9,9 +9,9 @@ const cvSchema = new mongoose.Schema(
         softSkills: { type: [String], required: true },
         certifications: { type: [String], required: true },
         expPro: {
-            entreprise: { type: String, required: true },
-            poste: { type: String, required: true },
-            description: { type: String, required: true },
+            entreprise: { type: String},
+            poste: { type: String},
+            description: { type: String},
         },
         visible: { type: Boolean, required: true },
         author: {

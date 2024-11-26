@@ -4,41 +4,60 @@ module.exports = {
     getOne: async (req, res) => {
         const cvId = req.params.id;
         try {
-            const cv = await Cv.findById(cvId);
-            res.send(cv);
-        } catch (error) {
-            console.log(error);
-            res.status(500).send({
-                message: `Error retrieving Cv with id=${cvId}`,
+          const cv = await Cv.findById(cvId);
+    
+          if (!cv) {
+            return res.status(404).send({
+              message: `CV avec l'ID=${cvId} non trouvé.`,
             });
+          }
+    
+          res.send(cv);
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({
+            message: `Erreur lors de la récupération du CV avec l'ID=${cvId}.`,
+          });
         }
-    },
+      },
 
-    search: async (req, res) => {
-        const search = req.params.search;
+      search: async (req, res) => {
         try {
-            const cvs = await Cv.find({
-                titre: { $regex: ".*" + search + ".*" },
-            }).limit(10);
+            const search = req.query.search || ""; // Si `search` n'est pas fourni, par défaut ""
+            const cvs = await Cv.find(
+                search
+                    ? { titre: { $regex: ".*" + search + ".*", $options: "i" } } // Filtrer par titre si un terme est fourni
+                    : {} // Sinon, récupérer tous les CV
+            ).limit(10);
             res.send(cvs);
         } catch (error) {
             console.log(error);
             res.status(500).send({
-                message: `Error retrieving Cvs with search=\"${search}\"}`,
+                message: "Error retrieving CVs",
+                error: error.message,
             });
         }
     },
 
     createCv: async (req, res) => {
+
+        const verifyCv = (cvData) => {
+            if (!cvData.titre || !cvData.description) {
+              return { message: 'Le titre et la description sont obligatoires.' };
+            }
+            return null; // Si tout est valide
+          };
+          
         try {
+            // Validation des données
             const isNotValidate = verifyCv(req.body);
             if (isNotValidate) {
-                res.status(400);
-                res.send({
-                    error: isNotValidate.message,
-                });
+                return res.status(400).send({ error: isNotValidate.message });
             }
+    
             const cvBody = req.body;
+    
+            // Création du nouveau CV
             const newCv = new Cv({
                 titre: cvBody.titre,
                 adresse: cvBody.adresse,
@@ -47,30 +66,31 @@ module.exports = {
                 softSkills: cvBody.softSkills,
                 certifications: cvBody.certifications,
                 expPro: cvBody.expPro,
-                visible: cvBody.expPro,
+                visible: cvBody.visible, // Correction de `visible`
+                author: req.user._id, // Associe le CV à l'utilisateur connecté
             });
-
-            newCv.author = req.user;
-            newCv.save();
-
-            const { id, nom, prenom } = req.user;
-            newCv.author = {
-                id,
-                nom,
-                prenom,
-            };
-            res.status(201);
-            res.send({
+    
+            // Sauvegarde du CV
+            await newCv.save();
+    
+            // Mise à jour de l'utilisateur pour ajouter le CV
+            const user = req.user;
+            user.cvs.push(newCv._id);
+            await user.save();
+    
+            res.status(201).send({
                 success: true,
+                message: 'CV créé avec succès.',
                 cv: newCv,
             });
         } catch (error) {
-            res.status(500);
-            res.send({
-                error: error.message,
+            console.error(error);
+            res.status(500).send({
+                error: error.message || 'Erreur lors de la création du CV.',
             });
         }
     },
+    
 
     editCv: async (req, res) => {
         try {

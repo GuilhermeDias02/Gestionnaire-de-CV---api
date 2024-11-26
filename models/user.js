@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema(
         prenom: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
+        cvs: [
+            {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'CV' 
+            }
+          ],
         role: { type: String, enum: ["admin", "user"], default: 'user'},
     },
     { timestamps: true }
