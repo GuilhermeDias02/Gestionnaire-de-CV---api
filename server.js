@@ -11,7 +11,7 @@ connectDB();
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Routes
 app.use('/api/', apiRouter);

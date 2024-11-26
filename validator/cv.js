@@ -16,12 +16,12 @@ module.exports = {
                     type: 'string',
                     minLength: 1,
                     maxLength: 32,
-                    errorMessage: 'Resume\'s (cv) " is missing or incorrect'
+                    errorMessage: 'Resume\'s (cv) "adresse" is missing or longer than 32 characters'
                 },
-                email: {
-                    type: 'email',
-                    format: 'email',
-                    errorMessage: 'User email is missing or incorrect'
+                desciption: {
+                    type: 'string',
+                    maxLength: 128,
+                    errorMessage: 'Resume\'s (cv) "description" is missing or longer than 128 characters'
                 },
                 password: {
                     type: 'string',
