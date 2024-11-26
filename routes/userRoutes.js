@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../models/user'); 
+const userController = require('../controllers/user')
 
 // Route pour récupérer tous les utilisateurs
 router.get('/', async (req, res) => {
@@ -45,6 +45,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la création de l\'utilisateur', error });
   }
 });
+router.get("/", userController.getAll);// juste pour les tests
+router.get("/:id", userController.getOne);
 
 module.exports = router;
-
