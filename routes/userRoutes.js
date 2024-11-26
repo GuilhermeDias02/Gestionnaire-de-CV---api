@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 
 // Route pour créer un utilisateur
 router.post('/', async (req, res) => {
+  console.log('Données reçues dans la requête POST:', req.body);
   try {
     const { nom, prenom, email, password, role="user" } = req.body; //un utilisateur a pour le moment le role user automatiquement (on verra par la suite pour le role admin)
 
