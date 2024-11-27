@@ -1,5 +1,18 @@
 const Cv = require("../models/cv");
 
+const verifyCv = (cvData) => {
+    if (!cvData.titre || cvData.titre.trim() === '') {
+      return { message: 'Le titre est requis.' };
+    }
+  
+    if (!cvData.techSkills || !Array.isArray(cvData.techSkills)) {
+      return { message: 'Les compétences techniques doivent être un tableau.' };
+    }
+  
+  
+    return null;
+  };
+  
 module.exports = {
     getOne: async (req, res) => {
         const cvId = req.params.id;
@@ -23,13 +36,13 @@ module.exports = {
 
       getByToken: async (req, res) => {
         try {
-            const search = req.query.search || ""; // Si `search` n'est pas fourni, par défaut ""
-            const cvs = await Cv.find(
-                search
-                    ? { titre: { $regex: ".*" + search + ".*", $options: "i" } } 
-                    : {}
-            ).limit(10);
-            res.send(cvs);
+            // Récupérer l'utilisateur à partir du token
+            const userId = req.user._id; // Assurez-vous que `req.user` est défini via le middleware d'authentification
+    
+            // Filtrer uniquement les CV appartenant à l'utilisateur connecté
+            const cvs = await Cv.find({ author: userId });
+    
+            res.send(cvs); // Envoyer les résultats au client
         } catch (error) {
             console.log(error);
             res.status(500).send({
@@ -37,7 +50,7 @@ module.exports = {
                 error: error.message,
             });
         }
-    },
+    },    
 
     createCv: async (req, res) => {
 
@@ -69,7 +82,7 @@ module.exports = {
                 certifications: cvBody.certifications,
                 expPro: cvBody.expPro,
                 visible: cvBody.visible,
-                author: req.user._id, // Associe le CV à l'utilisateur connecté
+                author: req.user._id, 
             });
     
             // Sauvegarde du CV
@@ -142,6 +155,22 @@ module.exports = {
         } catch (error) {
             res.status(500).send({
                 message: error.message || `Error deleting cv with id=${req.params.id}`
+            });
+        }
+    },
+
+    search: async (req, res) => {
+        const search = req.params.search;
+        try {
+            const cvs = await Cv.find({
+                titre: { $regex: ".*" + search + ".*" , $options: "i"},
+                visible: true,
+            }).limit(10);
+            res.send(cvs);
+        } catch (error) {
+            console.log(error);
+            res.status(500).send({
+                message: `Error retrieving Cvs with search=\"${search}\"}`,
             });
         }
     }

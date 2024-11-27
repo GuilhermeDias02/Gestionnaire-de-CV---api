@@ -4,8 +4,10 @@ const cvController = require("../controllers/cv");
 //const { verifyToken } = require("../middleware/jwt");
 const authMiddleware = require('../middleware/authMiddleware');
 
-router.get("/:id", authMiddleware, cvController.getOne);
-router.get("/", cvController.getByToken);
+
+router.get("/one/:id", authMiddleware, cvController.getOne);
+router.get("/", authMiddleware, cvController.getByToken);
+router.get("/search/:search", cvController.search);
 
 router.post("/", authMiddleware, cvController.createCv);
 
