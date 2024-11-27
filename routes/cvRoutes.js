@@ -4,6 +4,7 @@ const cvController = require("../controllers/cv");
 const { verifyToken } = require("../middleware/jwt");
 
 router.get("/:id", verifyToken, cvController.getOne);
+router.get
 router.get("/:seach", cvController.search);
 
 router.post("/", verifyToken, cvController.createCv);

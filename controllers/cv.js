@@ -14,6 +14,10 @@ module.exports = {
         }
     },
 
+    getByToken: async () => {
+        
+    },
+
     search: async (req, res) => {
         const search = req.params.search;
         try {
