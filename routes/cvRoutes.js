@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const cvController = require("../controllers/cv");
-const { verifyToken } = require("../middleware/jwt");
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.get("/:id", verifyToken, cvController.getOne);
-router.get
+router.get("/:id", authMiddleware, cvController.getOne);
+router.get("/", cvController.getByToken);
 router.get("/:seach", cvController.search);
 
-router.post("/", verifyToken, cvController.createCv);
+router.post("/", authMiddleware, cvController.createCv);
 
-router.put("/:id", verifyToken, cvController.editCv);
+router.put("/:id", authMiddleware, cvController.editCv);
 
-router.delete("/:id", verifyToken, cvController.deleteCv);
+router.delete("/:id", authMiddleware, cvController.deleteCv);
 
 module.exports = router;
