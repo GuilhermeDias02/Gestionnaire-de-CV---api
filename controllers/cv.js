@@ -21,13 +21,13 @@ module.exports = {
         }
       },
 
-      search: async (req, res) => {
+      getByToken: async (req, res) => {
         try {
             const search = req.query.search || ""; // Si `search` n'est pas fourni, par défaut ""
             const cvs = await Cv.find(
                 search
-                    ? { titre: { $regex: ".*" + search + ".*", $options: "i" } } // Filtrer par titre si un terme est fourni
-                    : {} // Sinon, récupérer tous les CV
+                    ? { titre: { $regex: ".*" + search + ".*", $options: "i" } } 
+                    : {}
             ).limit(10);
             res.send(cvs);
         } catch (error) {
@@ -45,7 +45,7 @@ module.exports = {
             if (!cvData.titre || !cvData.description) {
               return { message: 'Le titre et la description sont obligatoires.' };
             }
-            return null; // Si tout est valide
+            return null;
           };
           
         try {
@@ -59,6 +59,8 @@ module.exports = {
     
             // Création du nouveau CV
             const newCv = new Cv({
+                nom: req.user.nom,
+                prenom: req.user.prenom,
                 titre: cvBody.titre,
                 adresse: cvBody.adresse,
                 description: cvBody.description,
@@ -66,7 +68,7 @@ module.exports = {
                 softSkills: cvBody.softSkills,
                 certifications: cvBody.certifications,
                 expPro: cvBody.expPro,
-                visible: cvBody.visible, // Correction de `visible`
+                visible: cvBody.visible,
                 author: req.user._id, // Associe le CV à l'utilisateur connecté
             });
     

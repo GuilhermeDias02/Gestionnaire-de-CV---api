@@ -5,7 +5,7 @@ const cvController = require("../controllers/cv");
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.get("/:id", authMiddleware, cvController.getOne);
-router.get("/", cvController.search);
+router.get("/", cvController.getByToken);
 
 router.post("/", authMiddleware, cvController.createCv);
 
