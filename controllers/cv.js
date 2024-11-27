@@ -1,4 +1,5 @@
 const Cv = require("../models/cv");
+const { verifyCv } = require("../validator/cv");
 
 module.exports = {
     getOne: async (req, res) => {
@@ -56,28 +57,19 @@ module.exports = {
     },
 
     createCv: async (req, res) => {
-        const verifyCv = (cvData) => {
-            if (!cvData.titre || !cvData.description) {
-                return {
-                    message: "Le titre et la description sont obligatoires.",
-                };
-            }
-            return null;
-        };
-
         try {
             // Validation des données
-            const isNotValidate = verifyCv(req.body);
-            if (isNotValidate) {
-                return res.status(400).send({ error: isNotValidate.message });
-            }
+            // const isNotValidate = verifyCv(req.body);
+            // if (isNotValidate) {
+            //     return res.status(400).send({ error: isNotValidate.message });
+            // }
 
             const cvBody = req.body;
 
             // Création du nouveau CV
             const newCv = new Cv({
-                nom: req.user.nom,
-                prenom: req.user.prenom,
+                // nom: req.user.nom,
+                // prenom: req.user.prenom,
                 titre: cvBody.titre,
                 adresse: cvBody.adresse,
                 description: cvBody.description,
@@ -86,7 +78,7 @@ module.exports = {
                 certifications: cvBody.certifications,
                 expPro: cvBody.expPro,
                 visible: cvBody.visible,
-                author: req.user._id, // Associe le CV à l'utilisateur connecté
+                // author: req.user._id, // Associe le CV à l'utilisateur connecté
             });
 
             // Sauvegarde du CV

@@ -29,6 +29,10 @@ module.exports = {
                     errorMessage: "User's password, must contain at least one uppercase letter and one digit",
                     pattern: '^(?=.*[A-Z])(?=.*[0-9]).+$'
                 },
+                cvs: {
+                    type: 'array',
+                    errorMessage: "Error in cvs array"
+                },
                 role: {
                     type: 'string',
                     errorMessage: "User's role must be either user or admin"

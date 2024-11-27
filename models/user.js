@@ -8,11 +8,11 @@ const userSchema = new mongoose.Schema(
         password: { type: String, required: true },
         cvs: [
             {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: 'CV' 
-            }
-          ],
-        role: { type: String, enum: ["admin", "user"], default: 'user'},
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "CV",
+            },
+        ],
+        role: { type: String, enum: ["admin", "user"], default: "user" },
     },
     { timestamps: true }
 );

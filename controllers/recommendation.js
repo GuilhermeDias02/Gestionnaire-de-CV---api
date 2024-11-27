@@ -31,7 +31,9 @@ module.exports = {
         try {
             const recomm = Recommendation.find({ author: authorId });
             if (!recomm) {
-                return res.status(401).send({ message: "No recomendations from this author" });
+                return res
+                    .status(401)
+                    .send({ message: "No recomendations from this author" });
             }
             res.send(recomm);
         } catch (error) {
@@ -47,7 +49,9 @@ module.exports = {
         try {
             const recomm = Recommendation.find({ cv: cvId });
             if (!recomm) {
-                return res.status(401).send({ message: "No recomendations in this cv" });
+                return res
+                    .status(401)
+                    .send({ message: "No recomendations in this cv" });
             }
             res.send(recomm);
         } catch (error) {
@@ -102,14 +106,18 @@ module.exports = {
 
             if (recomm) {
                 res.status(204).send({
-                    message: 'Recommendation has been removed successfully.'
+                    message: "Recommendation has been removed successfully.",
                 });
             } else {
-                res.status(400).send(`No Recommendation with given id: ${recommId}`);
+                res.status(400).send(
+                    `No Recommendation with given id: ${recommId}`
+                );
             }
         } catch (error) {
             res.status(500).send({
-                message: error.message || `Error deleting recommendation with id=${req.params.id}`
+                message:
+                    error.message ||
+                    `Error deleting recommendation with id=${req.params.id}`,
             });
         }
     },

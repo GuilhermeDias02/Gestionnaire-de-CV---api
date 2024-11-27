@@ -57,51 +57,86 @@ module.exports = {
                         "certifications array items connot be longer than 50 characters",
                 },
                 expPro: {
-                    type: "object",
-                    properties: {
-                        entreprises: {
-                            type: "array",
-                            items: {
+                    // type: "object",
+                    // properties: {
+                    //     entreprises: {
+                    //         type: "array",
+                    //         items: {
+                    //             type: "string",
+                    //             minLength: 1,
+                    //             maxLength: 50,
+                    //         },
+                    //         errorMessage:
+                    //             "expPro.entreprise missing or item longer than 50 characters",
+                    //     },
+                    //     poste: {
+                    //         type: "array",
+                    //         items: {
+                    //             type: "string",
+                    //             minLength: 1,
+                    //             maxLength: 20,
+                    //         },
+                    //         errorMessage:
+                    //             "expPro.poste missing or item longer than 20 characters",
+                    //     },
+                    //     description: {
+                    //         type: "array",
+                    //         items: {
+                    //             type: "string",
+                    //             minLength: 1,
+                    //             maxLength: 200,
+                    //         },
+                    //         errorMessage:
+                    //             "expPro.description missing or item longer than 100 characters",
+                    //     },
+                    // },
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            entreprises: {
                                 type: "string",
                                 minLength: 1,
                                 maxLength: 50,
+                                errorMessage:
+                                    "expPro.entreprise missing or item longer than 50 characters",
                             },
-                            errorMessage:
-                                "expPro.entreprise missing or item longer than 50 characters",
-                        },
-                        poste: {
-                            type: "array",
-                            items: {
+                            poste: {
                                 type: "string",
                                 minLength: 1,
                                 maxLength: 20,
+                                errorMessage:
+                                    "expPro.poste missing or item longer than 20 characters",
                             },
-                            errorMessage:
-                                "expPro.poste missing or item longer than 20 characters",
-                        },
-                        description: {
-                            type: "array",
-                            items: {
+                            description: {
                                 type: "string",
                                 minLength: 1,
                                 maxLength: 200,
+                                errorMessage:
+                                    "expPro.description missing or item longer than 100 characters",
                             },
-                            errorMessage:
-                                "expPro.description missing or item longer than 100 characters",
                         },
+                        required: ["entreprise", "poste", "description"],
                     },
-                    required: ["entreprise", "poste", "description"],
                 },
                 visible: {
                     type: "boolean",
-                    errorMessage: "visible must be true or false"
+                    errorMessage: "visible must be true or false",
                 },
                 author: {
                     type: "number",
-                    errorMessage: "author must be the id of the user"
-                }
+                    errorMessage: "author must be the id of the user",
+                },
             },
-            required: ["titre", "techSkills", "softSkills", "certifications", "expPro", "visible", "author"],
+            required: [
+                "titre",
+                "techSkills",
+                "softSkills",
+                "certifications",
+                "expPro",
+                "visible",
+                "author",
+            ],
         };
         let result = validator.validate(cv, cvSchema);
 
