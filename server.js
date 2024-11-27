@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const apiRouter = require('./routes')
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 
 dotenv.config();
 
@@ -20,6 +22,41 @@ app.use(bodyParser.json());
 // app.use('/api/auth', require('./routes/authRoutes'));
 // app.use('/api/recommendation', require('./routes/recommendationRoutes'));
 // app.use('/api/cv', require('./routes/cvRoutes'));
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Book API',
+            version: '1.0.0'
+        },
+        servers: [
+            {
+                url: process.env.SERVER_URL || 'http://localhost:5000/'
+            }
+        ],
+        components: {
+            // securitySchemes: {
+            //     BearerAuth: {
+            //         type: 'http',
+            //         scheme: 'bearer',
+            //         bearerFormat: 'JWT'
+            //     }
+            // }
+        },
+        security: [
+            {
+                // BearerAuth: []
+            }
+        ]
+    },
+
+    apis: ['./routes/*.js']
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 app.use('/api', apiRouter)
 
