@@ -58,11 +58,10 @@ module.exports = {
 
     createCv: async (req, res) => {
         try {
-            // Validation des données
-            // const isNotValidate = verifyCv(req.body);
-            // if (isNotValidate) {
-            //     return res.status(400).send({ error: isNotValidate.message });
-            // }
+            const isNotValidate = verifyCv(req.body);
+            if (isNotValidate) {
+                return res.status(400).send({ error: isNotValidate.message });
+            }
 
             const cvBody = req.body;
 
