@@ -24,13 +24,13 @@ module.exports = {
 
     getByToken: async (req, res) => {
         try {
-            const search = req.query.search || ""; // Si `search` n'est pas fourni, par défaut ""
-            const cvs = await Cv.find(
-                search
-                    ? { titre: { $regex: ".*" + search + ".*", $options: "i" } }
-                    : {}
-            ).limit(10);
-            res.send(cvs);
+            // Récupérer l'utilisateur à partir du token
+            const userId = req.user._id; // Assurez-vous que `req.user` est défini via le middleware d'authentification
+    
+            // Filtrer uniquement les CV appartenant à l'utilisateur connecté
+            const cvs = await Cv.find({ author: userId });
+    
+            res.send(cvs); // Envoyer les résultats au client
         } catch (error) {
             console.log(error);
             res.status(500).send({
