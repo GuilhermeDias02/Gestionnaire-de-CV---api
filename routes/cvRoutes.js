@@ -184,64 +184,66 @@ router.get("/", cvController.getByToken);
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   description: The unique identifier of the cv.
- *                   example: "670507e5a85e8b4542098ab9"
- *                 nom:
- *                   type: string
- *                   description: The author's last name.
- *                   example: Doe
- *                 prenom:
- *                   type: string
- *                   description: The author's first name.
- *                   example: John
- *                 title:
- *                   type: string
- *                   description: Le title of the 
- *                   example: Full-Stack Developper
- *                 description:
- *                   type: string
- *                   description: The user's email address.
- *                   example: Locking for a job in the est of london...
- *                 techSkills:
- *                   type: array
- *                   description: All the technicall skills
- *                   example: C#, git, nodeJs
- *                 softSkills:
- *                   type: array
- *                   description: All the general skills
- *                   example: really really smart, serious, autonomus
- *                 certifications:
- *                   type: array
- *                   description: All the certifications/degrees
- *                   example: degree, scrum, azure
- *                 expPro:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       entreprise:
- *                         type: string
- *                         description: The company the person worked for
- *                         example: Amazon
- *                       poste:
- *                         type: string
- *                         description: The position is the company
- *                         example: Lead Dev
- *                       description:
- *                         type: string
- *                         decription: all the other information about the position
- *                 visble:
- *                   type: boolean
- *                   description: true if visible for other users than the author
- *                   example: true/false
- *                 authorId:
- *                   type: int
- *                   description: The user id of the author
- *                   example: 5645615156185
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: The unique identifier of the cv.
+ *                     example: "670507e5a85e8b4542098ab9"
+ *                   nom:
+ *                     type: string
+ *                     description: The author's last name.
+ *                     example: Doe
+ *                   prenom:
+ *                     type: string
+ *                     description: The author's first name.
+ *                     example: John
+ *                   title:
+ *                     type: string
+ *                     description: Le title of the 
+ *                     example: Full-Stack Developper
+ *                   description:
+ *                     type: string
+ *                     description: The user's email address.
+ *                     example: Locking for a job in the est of london...
+ *                   techSkills:
+ *                     type: array
+ *                     description: All the technicall skills
+ *                     example: C#, git, nodeJs
+ *                   softSkills:
+ *                     type: array
+ *                     description: All the general skills
+ *                     example: really really smart, serious, autonomus
+ *                   certifications:
+ *                     type: array
+ *                     description: All the certifications/degrees
+ *                     example: degree, scrum, azure
+ *                   expPro:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         entreprise:
+ *                           type: string
+ *                           description: The company the person worked for
+ *                           example: Amazon
+ *                         poste:
+ *                           type: string
+ *                           description: The position is the company
+ *                           example: Lead Dev
+ *                         description:
+ *                           type: string
+ *                           decription: all the other information about the position
+ *                   visble:
+ *                     type: boolean
+ *                     description: true if visible for other users than the author
+ *                     example: true/false
+ *                   authorId:
+ *                     type: int
+ *                     description: The user id of the author
+ *                     example: 5645615156185
  *       404:
  *         description: Cv not found.
  *       500:

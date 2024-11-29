@@ -69,24 +69,26 @@ router.post("./", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: string
- *                   description: The unique identifier of the user.
- *                   example: "670507e5a85e8b4542098ab9"
- *                 nom:
- *                   type: string
- *                   description: The user's last name.
- *                   example: Doe
- *                 prenom:
- *                   type: string
- *                   description: The user's first name.
- *                   example: John
- *                 email:
- *                   type: string
- *                   description: The user's email address.
- *                   example: john.doe@example.com
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: The unique identifier of the user.
+ *                     example: "670507e5a85e8b4542098ab9"
+ *                   nom:
+ *                     type: string
+ *                     description: The user's last name.
+ *                     example: Doe
+ *                   prenom:
+ *                     type: string
+ *                     description: The user's first name.
+ *                     example: John
+ *                   email:
+ *                     type: string
+ *                     description: The user's email address.
+ *                     example: john.doe@example.com
  *       401:
  *         description: Unauthorized - Missing or invalid token.
  *       500:
