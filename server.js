@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const apiRouter = require('./routes')
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocs = require("./swaggerConfig");
 
 dotenv.config();
 
@@ -22,6 +24,7 @@ app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/recommendation', require('./routes/recommendationRoutes'));
 app.use('/api/cv', require('./routes/cvRoutes'));
+app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const PORT = process.env.PORT || 5000;
 
