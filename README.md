@@ -44,3 +44,5 @@ Dans le cas où vous voulez exécuter le projet vous même il vous faudra suivre
 Sinon le projet est disponible sur le lien suivant : https://gestionnaire-de-cv-front.onrender.com/
 
 (lien pour exécuter les requête de l’api https://gestionnaire-de-cv-api.onrender.com/api/)
+
+La documentation fut réalisé avec swagger donc utilisé /api/api-docs
