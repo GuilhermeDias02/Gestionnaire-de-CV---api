@@ -36,13 +36,11 @@ module.exports = {
 
       getByToken: async (req, res) => {
         try {
-            // Récupérer l'utilisateur à partir du token
-            const userId = req.user._id; // Assurez-vous que `req.user` est défini via le middleware d'authentification
+            const userId = req.user._id;
     
-            // Filtrer uniquement les CV appartenant à l'utilisateur connecté
             const cvs = await Cv.find({ author: userId });
     
-            res.send(cvs); // Envoyer les résultats au client
+            res.send(cvs); 
         } catch (error) {
             console.log(error);
             res.status(500).send({

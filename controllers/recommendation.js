@@ -1,98 +1,85 @@
-const Recommendation = require('../models/recommendation');
+const Recommendation = require("../models/recommendation");
+const Cv = require("../models/cv");
 
 module.exports = {
-  // Récupérer toutes les recommandations
-  getAll: async (req, res) => {
-    try {
-      const recomm = await Recommendation.find();
-      res.json(recomm);
-    } catch (error) {
-      res.status(500).json({
-        message: 'Erreur lors de la récupération des Recommendations',
-        error,
-      });
-    }
-  },
-
-  // Récupérer une recommandation par ID
-  getOne: async (req, res) => {
-    const recommId = req.params.id;
-    try {
-      const recomm = await Recommendation.findById(recommId);
-      res.send(recomm);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        message: `Erreur lors de la récupération de la recommandation avec id=${recommId}`,
-      });
-    }
-  },
-
-  // Récupérer toutes les recommandations pour un CV
-  getOneByCv: async (req, res) => {
-    const cvId = req.params.cvId;
-    try {
-        const recommendations = await Recommendation.find({ cv: cvId });
-        res.send(recommendations);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({
-            message: `Error retrieving recommendations for cvId=${cvId}`,
-        });
-    }
-},
-
-
-  // Ajouter une nouvelle recommandation
-  createOne: async (req, res) => {
-    try {
-      console.log("Données reçues :", req.body);
-      const { cv, message, rating } = req.body;
-      // Validation des données
-      if (!cv || !message) {
-        return res.status(400).send({ message: "Le CV et le message sont obligatoires." });
+    // Récupérer toutes les recommandations pour un CV
+    getOneByCv: async (req, res) => {
+      const cvId = req.params.cvId;
+      try {
+          const recommendations = await Recommendation.find({ cv: cvId });
+          if (!recommendations) {
+              return res.status(404).send({ message: `Aucune recommandation trouvée pour le CV avec l'ID=${cvId}.` });
+          }
+          res.send(recommendations);
+      } catch (error) {
+          console.error(error);
+          res.status(500).send({
+              message: `Erreur lors de la récupération des recommandations pour cvId=${cvId}`,
+              error: error.message,
+          });
       }
-  
-      // Création de la recommandation
-      const newRecomm = new Recommendation({
-        cv,
-        message,
-        rating,
-        author: req.user?.id || null, 
-      });
-  
-      await newRecomm.save();
-  
-      res.status(201).send({
-        message: "Recommandation créée avec succès",
-        recommendation: newRecomm,
-      });
-    } catch (error) {
-      console.error("Erreur lors de la création de la recommandation :", error);
-      res.status(500).send({
-        message: "Erreur interne du serveur.",
-        error: error.message,
-      });
-    }
   },
+  
 
-  // Supprimer une recommandation
-  deleteOne: async (req, res) => {
-    try {
-      const recommId = req.params.id;
-      const recomm = await Recommendation.findByIdAndDelete(recommId);
-
-      if (recomm) {
-        res.status(204).send({
-          message: 'Recommendation supprimée avec succès.',
-        });
-      } else {
-        res.status(400).send(`Aucune recommandation trouvée avec l'id : ${recommId}`);
+    // Ajouter une nouvelle recommandation
+    createOne: async (req, res) => {
+      try {
+          const { cv, message, rating } = req.body;
+  
+          // Pas de validation stricte ici, car 0 est une valeur autorisée
+          if (rating < 0 || rating > 5) {
+              return res.status(400).send({ message: "La note doit être comprise entre 0 et 5." });
+          }
+  
+          const newRecomm = new Recommendation({
+              cv,
+              message,
+              rating,
+              author: req.user?.id || null,
+          });
+  
+          await newRecomm.save();
+          res.status(201).send({
+              message: "Recommandation créée avec succès",
+              recommendation: newRecomm,
+          });
+      } catch (error) {
+          console.error("Erreur lors de la création de la recommandation :", error);
+          res.status(500).send({
+              message: "Erreur interne du serveur.",
+              error: error.message,
+          });
       }
-    } catch (error) {
-      res.status(500).send({
-        message: error.message || `Erreur lors de la suppression de la recommandation avec id=${req.params.id}`,
-      });
-    }
   },
+
+    // Supprimer une recommandation
+    deleteOne: async (req, res) => {
+      try {
+          const recommId = req.params.id;
+
+          // Récupérer la recommandation
+          const recomm = await Recommendation.findById(recommId);
+          if (!recomm) {
+              return res.status(404).send({ message: 'Recommandation introuvable.' });
+          }
+
+          // Vérifier si l'utilisateur est le propriétaire du CV
+          const cv = await Cv.findById(recomm.cv);
+          if (!cv) {
+              return res.status(404).send({ message: 'CV introuvable.' });
+          }
+
+          if (cv.author.toString() !== req.user._id.toString()) {
+              return res.status(403).send({ message: 'Accès interdit : vous n\'êtes pas le propriétaire de ce CV.' });
+          }
+
+          // Supprimer la recommandation
+          await Recommendation.findByIdAndDelete(recommId);
+          res.status(200).send({ message: 'Recommandation supprimée avec succès.' });
+      } catch (error) {
+          res.status(500).send({
+              message: error.message || 'Erreur lors de la suppression de la recommandation.',
+          });
+      }
+  },  
 };
