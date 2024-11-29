@@ -1,20 +1,21 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const recomSchema = new mongoose.Schema(
+
+const recommSchema = new mongoose.Schema(
     {
-        message: { type: String, required: true },
-        author: {
-            type: mongoose.Schema.ObjectId,
-            ref: "User",
-            required: true,
-        },
-        cv: {
-            type: mongoose.Schema.ObjectId,
-            ref: "Cv",
-            required: true,
-        },
+      message: { type: String, required: true },
+      rating: { type: Number, min: 1, max: 5 },
+      author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      cv: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cv",
+        required: true,
+      },
     },
     { timestamps: true }
-);
-
-module.exports = mongoose.model("Recommendation", recomSchema);
+  );
+  
+  module.exports = mongoose.model('Recommendation', recommSchema);  

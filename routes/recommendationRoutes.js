@@ -1,14 +1,12 @@
-const router = require("express").Router();
-const recommController = require("../controllers/recommendation");
-const authMiddleware = require("../middleware/authMiddleware");
+const express = require('express');
+const router = express.Router();
+const recommendationController = require('../controllers/recommendation');
+const authMiddleware = require('../middleware/authMiddleware'); // Middleware d'authentification
 
-router.get("/", recommController.getAll);
-router.get("/recomm/:id", authMiddleware, recommController.getOne);
-router.get("/author/:id", authMiddleware, recommController.getOneByAuthor);
-router.get("/cv/:id", authMiddleware, recommController.getOneByCv);
-
-router.post("/", authMiddleware, recommController.createOne);
-
-router.delete("/:id", authMiddleware, recommController.deleteOne);
+router.get('/', authMiddleware, recommendationController.getAll); // Récupérer toutes les recommandations
+//router.get('/:id', recommendationController.getOne); // Récupérer une recommandation par ID
+router.get('/:cvId', authMiddleware, recommendationController.getOneByCv); // Récupérer les recommandations pour un CV
+router.post('/', authMiddleware, recommendationController.createOne); // Ajouter une recommandation (authentifié)
+router.delete('/:id', authMiddleware, recommendationController.deleteOne); // Supprimer une recommandation (authentifié)
 
 module.exports = router;
