@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user");
+const authMiddleware = require("../middleware/authMiddleware");
 //const User = require('../models/user');
 
 /**
@@ -131,5 +132,8 @@ router.get("/", userController.getAll);
  *         description: Internal server error.
  */
 router.get("/:id", userController.getOne);
+
+
+router.get("/connected/token", authMiddleware, userController.getConnected)
 
 module.exports = router;

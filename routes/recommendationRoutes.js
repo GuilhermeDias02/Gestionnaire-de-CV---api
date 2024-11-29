@@ -1,14 +1,14 @@
 const router = require("express").Router();
 const recommController = require("../controllers/recommendation");
-const { verifyToken } = require("../middleware/jwt");
+const authMiddleware = require("../middleware/authMiddleware");
 
 router.get("/", recommController.getAll);
-router.get("/:id", verifyToken, recommController.getOne);
-router.get("/:id", verifyToken, recommController.getOneByAuthor);
-router.get("/:id", verifyToken, recommController.getOneByCv);
+router.get("/recomm/:id", authMiddleware, recommController.getOne);
+router.get("/author/:id", authMiddleware, recommController.getOneByAuthor);
+router.get("/cv/:id", authMiddleware, recommController.getOneByCv);
 
-router.post("/", verifyToken, recommController.createOne);
+router.post("/", authMiddleware, recommController.createOne);
 
-router.delete("/", verifyToken, recommController.deleteOne);
+router.delete("/:id", authMiddleware, recommController.deleteOne);
 
 module.exports = router;
